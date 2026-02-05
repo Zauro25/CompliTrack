@@ -9,16 +9,16 @@ CompliTrack adalah aplikasi web internal untuk mengelola kebijakan/SOP perusahaa
 
 - Jenis: Fullstack Web Application
 - Backend: Laravel
-- Frontend: React
+- Frontend: Blade
 - Styling: Tailwind CSS
 - Database: PostgreSQL
 - Domain: Policy, SOP, dan Compliance Management
 
 ## Tech Stack
 - Laravel 12 (Fortify untuk auth)
-- React + Vite (Inertia sebagai bridge)
+- Blade
 - Tailwind CSS
-- TypeScript
+- PHP
 - PostgreSQL
 
 ## Fitur Utama (Features)
@@ -133,16 +133,16 @@ CompliTrack is an internal web platform to manage company policies/SOPs, distrib
 
 - Type: Fullstack Web Application
 - Backend: Laravel
-- Frontend: React
+- Frontend: Blade
 - Styling: Tailwind CSS
 - Database: PostgreSQL
 - Domain: Policy, SOP, and Compliance Management
 
 ## Tech Stack
 - Laravel 12 (Fortify for auth)
-- React + Vite (Inertia as the bridge)
+- Blade
 - Tailwind CSS
-- TypeScript
+- PHP
 - PostgreSQL
 
 ## Features
