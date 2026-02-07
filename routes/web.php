@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
+use App\Http\Controllers\DashboardController;
 
 
 // Landing page
@@ -9,7 +10,7 @@ Route::get('/', function () {
     return view('welcome');
 })->name('home');
 
-Route::middleware('auth')->get('/dashboard', function () {
+Route::middleware('auth')->get('DashboardController@index', function () {
     $role = Auth::user()->role ?? null;
     return match ($role) {
         'admin' => redirect()->route('admin.dashboard'),
@@ -48,7 +49,7 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->as('admin.')->group(
 
 // Staff routes
 Route::middleware(['auth', 'role:staff'])->prefix('staff')->as('staff.')->group(function () {
-    Route::get('dashboard', function () { return view('staff.dashboard'); })->name('dashboard');
+    Route::get('dashboard', [DashboardController::class, 'staffDashboard'])->name('dashboard');
     Route::get('policies', [App\Http\Controllers\PoliciesController::class, 'index'])->name('policies.index');
     Route::resource('checklists', App\Http\Controllers\ChecklistsController::class)->only(['index', 'show', 'edit', 'update']);
     Route::resource('evidences', App\Http\Controllers\EvidencesController::class)->only(['index', 'create', 'store', 'destroy']);

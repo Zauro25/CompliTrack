@@ -111,4 +111,27 @@ select:focus[data-flux-control] {
     .btn-secondary:hover {
         background-color: var(--color-teal-600);
     }
+
+    .btn-ghost {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 0.5rem;
+        padding: 0.75rem 1.5rem;
+        font-weight: 600;
+        color: #fff;
+        border: 1px solid rgba(255, 255, 255, 0.6);
+        background-color: transparent;
+        transition: background-color 150ms ease, color 150ms ease, border-color 150ms ease;
+    }
+
+    .btn-ghost:hover {
+        background-color: rgba(255, 255, 255, 0.12);
+        border-color: rgba(255, 255, 255, 0.8);
+    }
+
+    .landing-hero {
+        background-color: var(--color-navy-700);
+        color: #fff;
+    }
 }
