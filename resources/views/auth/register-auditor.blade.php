@@ -2,10 +2,9 @@
 
 @section('content')
 <div class="max-w-md mx-auto py-10 px-4">
-    <h1 class="text-2xl font-bold text-primary mb-6">Register as Staff</h1>
-    <form method="POST" action="{{ route('register') }}" class="bg-white shadow rounded-lg p-6">
+    <h1 class="text-2xl font-bold text-primary mb-6">Register Auditor</h1>
+    <form method="POST" action="{{ route('register.auditor') }}" class="bg-white shadow rounded-lg p-6">
         @csrf
-        <input type="hidden" name="role" value="staff">
         <div class="mb-4">
             <label class="block text-sm font-medium text-gray-700 mb-1">Full Name</label>
             <input type="text" name="nama" value="{{ old('nama') }}" class="w-full border border-gray-300 rounded px-3 py-2 focus:ring-primary focus:border-primary" required>
@@ -43,7 +42,7 @@
             <input type="password" name="password_confirmation" class="w-full border border-gray-300 rounded px-3 py-2 focus:ring-primary focus:border-primary" required>
         </div>
         <div class="flex justify-end">
-            <button type="submit" class="btn-primary">Register as Staff</button>
+            <button type="submit" class="btn-primary">Register Auditor</button>
         </div>
     </form>
 </div>

@@ -9,12 +9,19 @@ class DivisionSeeder extends Seeder
 {
     public function run(): void
     {
-        DB::table('divisions')->insert([
-            [
-                'division_id' => 1,
-                'Nama_Divisi' => 'Default Division',
-                'Deskripsi' => 'This is the default division for initial users.'
-            ],
-        ]);
+        $divisions = [
+            'IT / Engineering',
+            'Human Resources',
+            'Finance',
+            'Operations',
+            'Legal & Compliance',
+        ];
+
+        foreach ($divisions as $name) {
+            DB::table('divisions')->updateOrInsert(
+                ['Nama_Divisi' => $name],
+                ['Deskripsi' => null]
+            );
+        }
     }
 }

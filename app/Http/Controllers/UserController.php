@@ -23,9 +23,14 @@ class UserController extends Controller
             'password' => 'required|string|min:6',
             'division_id' => 'required|integer',
         ]);
-        $data['password'] = bcrypt($data['password']);
-        $data['role'] = 'staff';
-        $user = User::create($data);
+        $user = User::create([
+            'Nama' => $data['nama'],
+            'email' => $data['email'],
+            'username' => $data['username'],
+            'division_id' => $data['division_id'],
+            'password' => bcrypt($data['password']),
+            'role' => 'staff',
+        ]);
         $token = $user->createToken('api_token')->plainTextToken;
         return response()->json([
             'user' => $user,
@@ -43,9 +48,14 @@ class UserController extends Controller
             'password' => 'required|string|min:6',
             'division_id' => 'required|integer',
         ]);
-        $data['password'] = bcrypt($data['password']);
-        $data['role'] = 'admin';
-        $user = User::create($data);
+        $user = User::create([
+            'Nama' => $data['nama'],
+            'email' => $data['email'],
+            'username' => $data['username'],
+            'division_id' => $data['division_id'],
+            'password' => bcrypt($data['password']),
+            'role' => 'admin',
+        ]);
         $token = $user->createToken('api_token')->plainTextToken;
         return response()->json([
             'user' => $user,
@@ -63,9 +73,14 @@ class UserController extends Controller
             'password' => 'required|string|min:6',
             'division_id' => 'required|integer',
         ]);
-        $data['password'] = bcrypt($data['password']);
-        $data['role'] = 'auditor';
-        $user = User::create($data);
+        $user = User::create([
+            'Nama' => $data['nama'],
+            'email' => $data['email'],
+            'username' => $data['username'],
+            'division_id' => $data['division_id'],
+            'password' => bcrypt($data['password']),
+            'role' => 'auditor',
+        ]);
         $token = $user->createToken('api_token')->plainTextToken;
         return response()->json([
             'user' => $user,
@@ -113,8 +128,13 @@ class UserController extends Controller
             'password' => 'required|string',
             'division_id' => 'required|integer',
         ]);
-        $data['password'] = bcrypt($data['password']);
-        $user = User::create($data);
+        $user = User::create([
+            'Nama' => $data['nama'],
+            'email' => $data['email'],
+            'username' => $data['username'],
+            'division_id' => $data['division_id'],
+            'password' => bcrypt($data['password']),
+        ]);
         return response()->json($user, 201);
     }
 

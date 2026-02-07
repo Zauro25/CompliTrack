@@ -1,15 +1,33 @@
 @import 'tailwindcss';
-@import '../../vendor/livewire/flux/dist/flux.css';
-
 @source '../views';
 @source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
 @source '../../vendor/livewire/flux-pro/stubs/**/*.blade.php';
 @source '../../vendor/livewire/flux/stubs/**/*.blade.php';
 
-@custom-variant dark (&:where(.dark, .dark *));
-
-@theme {
+:root {
     --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+
+    --color-navy-50: #f3f6fa;
+    --color-navy-100: #e6ecf3;
+    --color-navy-200: #c1d0e4;
+    --color-navy-300: #8ba8c7;
+    --color-navy-400: #52709a;
+    --color-navy-500: #243a5e;
+    --color-navy-600: #1a2b47;
+    --color-navy-700: #14213a;
+    --color-navy-800: #10182a;
+    --color-navy-900: #0a1020;
+
+    --color-teal-50: #e6fcf7;
+    --color-teal-100: #b9f3e6;
+    --color-teal-200: #7de8d2;
+    --color-teal-300: #36d6b6;
+    --color-teal-400: #14b89a;
+    --color-teal-500: #0e8c74;
+    --color-teal-600: #0b6b5a;
+    --color-teal-700: #095346;
+    --color-teal-800: #073d34;
+    --color-teal-900: #052a24;
 
     --color-zinc-50: #fafafa;
     --color-zinc-100: #f5f5f5;
@@ -23,44 +41,74 @@
     --color-zinc-900: #171717;
     --color-zinc-950: #0a0a0a;
 
-    --color-accent: var(--color-neutral-800);
-    --color-accent-content: var(--color-neutral-800);
-    --color-accent-foreground: var(--color-white);
+    --color-primary: var(--color-navy-700);
+    --color-primary-foreground: #fff;
+    --color-secondary: var(--color-teal-500);
+    --color-secondary-foreground: #fff;
+
+    --color-accent: var(--color-primary);
+    --color-accent-content: var(--color-primary);
+    --color-accent-foreground: var(--color-primary-foreground);
 }
 
-@layer theme {
-    .dark {
-        --color-accent: var(--color-white);
-        --color-accent-content: var(--color-white);
-        --color-accent-foreground: var(--color-neutral-800);
-    }
+.dark {
+    --color-accent: #fff;
+    --color-accent-content: #fff;
+    --color-accent-foreground: #111827;
 }
 
-@layer base {
-
-    *,
-    ::after,
-    ::before,
-    ::backdrop,
-    ::file-selector-button {
-        border-color: var(--color-gray-200, currentColor);
-    }
+*,
+::after,
+::before,
+::backdrop,
+::file-selector-button {
+    border-color: var(--color-gray-200, currentColor);
 }
 
 [data-flux-field]:not(ui-radio, ui-checkbox) {
-    @apply grid gap-2;
+    display: grid;
+    gap: 0.5rem;
 }
 
 [data-flux-label] {
-    @apply  !mb-0 !leading-tight;
+    margin-bottom: 0 !important;
+    line-height: 1.25 !important;
 }
 
 input:focus[data-flux-control],
 textarea:focus[data-flux-control],
 select:focus[data-flux-control] {
-    @apply outline-hidden ring-2 ring-accent ring-offset-2 ring-offset-accent-foreground;
+    outline: none;
+    box-shadow: 0 0 0 2px var(--color-accent), 0 0 0 4px var(--color-accent-foreground);
 }
 
-/* \[:where(&)\]:size-4 {
-    @apply size-4;
-} */
+@layer components {
+    .btn-primary,
+    .btn-secondary {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 0.5rem;
+        padding: 0.75rem 1.5rem;
+        font-weight: 600;
+        transition: background-color 150ms ease, color 150ms ease, opacity 150ms ease;
+    }
+
+    .btn-primary {
+        background-color: var(--color-primary);
+        color: #fff;
+    }
+
+    .btn-primary:hover {
+        background-color: var(--color-navy-600);
+    }
+
+    .btn-secondary {
+        background-color: var(--color-secondary);
+        color: #fff;
+    }
+
+    .btn-secondary:hover {
+        background-color: var(--color-teal-600);
+    }
+}
