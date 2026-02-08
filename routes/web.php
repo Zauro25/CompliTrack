@@ -21,6 +21,9 @@ Route::middleware('auth')->get('DashboardController@index', function () {
 })->name('dashboard');
 
 // Auth routes
+Route::get('admin/login', [App\Http\Controllers\Auth\LoginController::class, 'showAdminLoginForm'])->name('admin.login');
+Route::post('admin/login', [App\Http\Controllers\Auth\LoginController::class, 'adminLogin'])
+    ->name('admin.login.submit');
 Route::get('login', [App\Http\Controllers\Auth\LoginController::class, 'showLoginForm'])->name('login');
 Route::post('login', [App\Http\Controllers\Auth\LoginController::class, 'login']);
 Route::post('logout', [App\Http\Controllers\Auth\LoginController::class, 'logout'])->name('logout');

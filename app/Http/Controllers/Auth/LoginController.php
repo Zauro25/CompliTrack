@@ -12,7 +12,32 @@ class LoginController extends Controller
     {
         return view('auth.login');
     }
+    public function showAdminLoginForm()
+    {
+        return view('auth.admin-login');
+    }
 
+    public function adminLogin(Request $request)
+    {
+        $credentials = $request->only('email', 'password');
+        if (Auth::attempt($credentials, $request->filled('remember'))) {
+            $request->session()->regenerate();
+            $role = Auth::user()->role ?? null;
+            if ($role == 'admin') {
+                return redirect()->route('admin.dashboard');
+            }
+             Auth::logout();
+             $request->session()->invalidate();
+             $request->session()->regenerateToken();
+
+             return back()->withErrors([
+            'email' => 'Access denied. Admin only.',
+            ])->withInput();
+        } 
+        return back()->withErrors([
+        'email' => 'The provided credentials do not match our records.',
+        ])->withInput();
+    }
     public function login(Request $request)
     {
         $credentials = $request->only('email', 'password');
