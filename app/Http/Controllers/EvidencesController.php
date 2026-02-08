@@ -2,15 +2,23 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\AuditReviews;
+use App\Models\Division;
+use App\Models\User;
+use App\Models\Policies;
 use App\Models\Evidences;
+use GuzzleHttp\Psr7\Query;
 use Illuminate\Http\Request;
 
 class EvidencesController extends Controller
 {
     public function index()
     {
+        $user = request()->user();
+        $divisionId = $user->division_id;
+        $divisionName = Division::where('division_id', $divisionId)->value('Nama_Divisi'); 
         $evidences = Evidences::all();
-        return response()->json($evidences);
+        return view('staff.evidences.index', compact('evidences', 'divisionName'));
     }
 
     public function show($id)
@@ -21,12 +29,16 @@ class EvidencesController extends Controller
 
     public function store(Request $request)
     {
+        $user = request()->user();
+        $divisionId = $user->division_id;
         $data = $request->validate([
             'compliance_id' => 'required|integer',
             'file_path' => 'required|string',
         ]);
-        $evidence = Evidences::create($data);
-        return response()->json($evidence, 201);
+        $evidence = Evidences::create($data,
+        fn ($query) => $query->where('division_id', $divisionId)
+        );
+        return view('staff.evidences.index', compact('evidences'));
     }
 
     public function update(Request $request, $id)

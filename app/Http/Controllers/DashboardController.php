@@ -51,6 +51,7 @@ class DashboardController extends Controller
     {
         $user = request()->user();
         $divisionId = $user->division_id;
+        $divisionName = Division::where('division_id', $divisionId)->value('Nama_Divisi'); 
         $totalPolicies = Policies::where('division_id', $divisionId)->count();
         // $totalChecklist = Checklists::where('division_id', $divisionId)->count();
 
@@ -65,9 +66,10 @@ class DashboardController extends Controller
 
         return view('staff.dashboard', compact(
             'divisionId',
+            'divisionName',
             'totalPolicies',
             // 'totalChecklist',
-            'totalEvidences'
+            'totalEvidences',
         ));
     }
 
