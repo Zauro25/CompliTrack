@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Password;
+use Laravel\Fortify\Features;
 
 class LoginController extends Controller
 {
@@ -43,13 +45,23 @@ class LoginController extends Controller
         $credentials = $request->only('email', 'password');
         if (Auth::attempt($credentials, $request->filled('remember'))) {
             $request->session()->regenerate();
-            $role = Auth::user()->role ?? null;
-            return match ($role) {
-                'admin' => redirect()->route('admin.dashboard'),
-                'staff' => redirect()->route('staff.dashboard'),
-                'auditor' => redirect()->route('auditor.dashboard'),
-                default => redirect()->route('home'),
-            };
+            $user = Auth::user();
+
+            if (
+                Features::canManageTwoFactorAuthentication()
+                && !empty($user?->two_factor_secret)
+                && !empty($user?->two_factor_confirmed_at)
+            ) {
+                Auth::logout();
+                $request->session()->put([
+                    'login.id' => $user->user_id,
+                    'login.remember' => $request->boolean('remember'),
+                ]);
+
+                return redirect()->route('two-factor.login');
+            }
+
+            return redirect()->route('dashboard');
         }
         return back()->withErrors([
             'email' => 'The provided credentials do not match our records.',
@@ -62,5 +74,24 @@ class LoginController extends Controller
         $request->session()->invalidate();
         $request->session()->regenerateToken();
         return redirect('/');
+    }
+
+    public function sendResetLinkEmail(Request $request)
+    {
+        $request->validate([
+            'email' => ['required', 'email'],
+        ]);
+
+        $status = Password::sendResetLink([
+            'email' => $request->input('email'),
+        ]);
+
+        if ($status === Password::RESET_LINK_SENT) {
+            return back()->with('status', __($status));
+        }
+
+        throw \Illuminate\Validation\ValidationException::withMessages([
+            'email' => [__($status)],
+        ]);
     }
 }

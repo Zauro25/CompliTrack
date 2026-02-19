@@ -10,6 +10,7 @@
                 <tr>
                     <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Name</th>
                     <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Email</th>
+                    <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Division</th>
                     <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Role</th>
                     <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Actions</th>
                 </tr>
@@ -17,8 +18,9 @@
             <tbody class="bg-white divide-y divide-gray-200">
                 @foreach ($users as $user)
                 <tr>
-                    <td class="px-6 py-4 whitespace-nowrap">{{ $user->name }}</td>
+                    <td class="px-6 py-4 whitespace-nowrap">{{ $user->Nama }}</td>
                     <td class="px-6 py-4 whitespace-nowrap">{{ $user->email }}</td>
+                    <td class="px-6 py-4 whitespace-nowrap">{{ $user->division?->Nama_Divisi ?? '-' }}</td>
                     <td class="px-6 py-4 whitespace-nowrap">
                         <span class="inline-block px-2 py-1 rounded bg-secondary text-white text-xs">{{ ucfirst($user->role) }}</span>
                     </td>

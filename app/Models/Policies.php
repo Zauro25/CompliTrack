@@ -18,7 +18,7 @@ class Policies extends Model
     ];
 
     protected $casts = [
-        'status' => 'string',
+        'Status' => 'string',
     ];
 
     public function policiesVersions()

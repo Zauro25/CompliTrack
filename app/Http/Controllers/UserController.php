@@ -2,15 +2,29 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Division;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $users = User::all();
-        return response()->json($users);
+        if ($this->isApi($request)) {
+            return response()->json(User::with('division')->get());
+        }
+
+        $users = User::with('division')->latest()->paginate(10);
+
+        return view('admin.users.index', compact('users'));
+    }
+
+    public function create()
+    {
+        $divisions = Division::orderBy('Nama_Divisi')->get();
+
+        return view('admin.users.create', compact('divisions'));
     }
 
     // API Register
@@ -122,43 +136,89 @@ class UserController extends Controller
     public function store(Request $request)
     {
         $data = $request->validate([
-            'nama' => 'required|string',
-            'email' => 'required|email',
-            'username' => 'required|string',
-            'password' => 'required|string',
+            'name' => 'nullable|string|max:255',
+            'nama' => 'nullable|string|max:255',
+            'email' => 'required|email|unique:users,email',
+            'username' => 'required|string|max:255|unique:users,username',
+            'password' => 'required|string|min:8',
             'division_id' => 'required|integer',
+            'role' => 'nullable|in:admin,staff,auditor',
         ]);
+
+        $nama = $data['nama'] ?? $data['name'] ?? null;
+
         $user = User::create([
-            'Nama' => $data['nama'],
+            'Nama' => $nama,
             'email' => $data['email'],
             'username' => $data['username'],
             'division_id' => $data['division_id'],
-            'password' => bcrypt($data['password']),
+            'password' => Hash::make($data['password']),
+            'role' => $data['role'] ?? 'staff',
         ]);
-        return response()->json($user, 201);
+
+        if ($this->isApi($request)) {
+            return response()->json($user, 201);
+        }
+
+        return redirect()->route('admin.users.index')->with('success', 'User created successfully.');
+    }
+
+    public function edit($id)
+    {
+        $user = User::findOrFail($id);
+        $divisions = Division::orderBy('Nama_Divisi')->get();
+
+        return view('admin.users.edit', compact('user', 'divisions'));
     }
 
     public function update(Request $request, $id)
     {
         $user = User::findOrFail($id);
         $data = $request->validate([
-            'nama' => 'sometimes|string',
-            'email' => 'sometimes|email',
-            'username' => 'sometimes|string',
-            'password' => 'sometimes|string',
+            'name' => 'nullable|string|max:255',
+            'nama' => 'nullable|string|max:255',
+            'email' => 'sometimes|email|unique:users,email,'.$user->user_id.',user_id',
+            'username' => 'sometimes|string|max:255|unique:users,username,'.$user->user_id.',user_id',
+            'password' => 'nullable|string|min:8',
             'division_id' => 'sometimes|integer',
+            'role' => 'nullable|in:admin,staff,auditor',
         ]);
-        if (isset($data['password'])) {
-            $data['password'] = bcrypt($data['password']);
+
+        if (array_key_exists('nama', $data) || array_key_exists('name', $data)) {
+            $data['Nama'] = $data['nama'] ?? $data['name'];
         }
+
+        unset($data['nama'], $data['name']);
+
+        if (isset($data['password'])) {
+            $data['password'] = Hash::make($data['password']);
+        } else {
+            unset($data['password']);
+        }
+
         $user->update($data);
-        return response()->json($user);
+
+        if ($this->isApi($request)) {
+            return response()->json($user);
+        }
+
+        return redirect()->route('admin.users.index')->with('success', 'User updated successfully.');
     }
 
-    public function destroy($id)
+    public function destroy(Request $request, $id)
     {
         $user = User::findOrFail($id);
         $user->delete();
+
+        if ($this->isApi($request)) {
         return response()->json(['message' => 'Deleted successfully']);
+        }
+
+        return redirect()->route('admin.users.index')->with('success', 'User deleted successfully.');
+    }
+
+    private function isApi(Request $request): bool
+    {
+        return $request->is('api/*') || $request->expectsJson();
     }
 }

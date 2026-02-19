@@ -16,8 +16,8 @@
             <tbody class="bg-white divide-y divide-gray-200">
                 @foreach ($divisions as $division)
                 <tr>
-                    <td class="px-6 py-4 whitespace-nowrap">{{ $division->name }}</td>
-                    <td class="px-6 py-4 whitespace-nowrap">{{ $division->description }}</td>
+                    <td class="px-6 py-4 whitespace-nowrap">{{ $division->Nama_Divisi }}</td>
+                    <td class="px-6 py-4 whitespace-nowrap">{{ $division->Deskripsi }}</td>
                     <td class="px-6 py-4 whitespace-nowrap">
                         <a href="{{ route('admin.divisions.edit', $division) }}" class="text-primary hover:underline mr-2">Edit</a>
                         <form action="{{ route('admin.divisions.destroy', $division) }}" method="POST" class="inline">

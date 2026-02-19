@@ -38,12 +38,21 @@ class DashboardController extends Controller
         $totalDivision = Division::count();
         $totalPolicies = Policies::count();
         $totalEvidences = Evidences::count();
+        $totalAuditReviews = AuditReviews::count();
+        $needsFixReviews = AuditReviews::where('status', 'needs_fix')->count();
+        $recentAuditReviews = AuditReviews::with(['complianceEntry.user', 'auditor'])
+            ->latest('reviewed_at')
+            ->limit(8)
+            ->get();
         
         return view('admin.dashboard', compact(
             'totalUser',
             'totalDivision',
             'totalPolicies',
-            'totalEvidences'
+            'totalEvidences',
+            'totalAuditReviews',
+            'needsFixReviews',
+            'recentAuditReviews'
         ));
     }
 
@@ -53,7 +62,10 @@ class DashboardController extends Controller
         $divisionId = $user->division_id;
         $divisionName = Division::where('division_id', $divisionId)->value('Nama_Divisi'); 
         $totalPolicies = Policies::where('division_id', $divisionId)->count();
-        // $totalChecklist = Checklists::where('division_id', $divisionId)->count();
+        $totalChecklist = Checklists::whereHas(
+            'policiesVersion.policies',
+            fn ($query) => $query->where('division_id', $divisionId)
+        )->count();
 
         $totalCompliance = ComplianceEntries::whereHas( 'checklist.policiesVersion.policies',
         fn ($query) => $query->where('division_id', $divisionId)
@@ -68,20 +80,20 @@ class DashboardController extends Controller
             'divisionId',
             'divisionName',
             'totalPolicies',
-            // 'totalChecklist',
+            'totalChecklist',
+            'totalCompliance',
             'totalEvidences',
         ));
     }
 
-    public function auditorDashboard($user)
+    public function auditorDashboard()
     {
         $totalAuditReviews = AuditReviews::count();
-        $pendingReviews = AuditReviews::where('status', 'pending')->count();
+        $needsFixReviews = AuditReviews::where('status', 'needs_fix')->count();
 
-        return view ('auditor.dashboard', compact(
+        return view('auditor.dashboard', compact(
             'totalAuditReviews',
-            'pendingReviews'
-        ),
-        response()->json($totalAuditReviews, $pendingReviews));
+            'needsFixReviews'
+        ));
     }
 }

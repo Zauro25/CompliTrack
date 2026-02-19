@@ -8,10 +8,13 @@ class Division extends Model
 {
     protected $table = 'divisions';
 
+    protected $primaryKey = 'division_id';
+
     protected $fillable = [
         'Nama_Divisi',
         'Deskripsi',
     ];
+
     public function users()
     {
         return $this->hasMany(User::class, 'division_id');

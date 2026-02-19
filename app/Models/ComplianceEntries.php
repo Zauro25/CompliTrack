@@ -37,5 +37,15 @@ class ComplianceEntries extends Model
         return $this->hasMany(Evidences::class, 'compliance_id');
     }
 
+    public function auditReviews()
+    {
+        return $this->hasMany(AuditReviews::class, 'compliance_id');
+    }
+
+    public function latestAuditReview()
+    {
+        return $this->hasOne(AuditReviews::class, 'compliance_id')->latestOfMany('reviewed_at');
+    }
+
 
 }

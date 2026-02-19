@@ -18,20 +18,36 @@
         <div class="min-h-screen bg-gray-100 dark:bg-gray-900">
             @include('layouts.navigation')
 
-            <!-- Page Heading -->
-            @isset($header)
-                <header class="bg-white dark:bg-gray-800 shadow">
-                    <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
-                        {{ $header }}
-                    </div>
-                </header>
-            @endisset
+            <div class="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8 py-6">
+                <div class="flex flex-col gap-6 lg:flex-row">
+                    @auth
+                        @include('layouts.app.sidebar')
+                    @endauth
 
-            <!-- Page Content -->
-            <main>
-                {{ $slot ?? '' }}
-                @yield('content')
-            </main>
+                    <div class="min-w-0 flex-1 space-y-6">
+                        <!-- Page Heading -->
+                        @isset($header)
+                            <header class="bg-white dark:bg-gray-800 shadow rounded-lg">
+                                <div class="py-6 px-4 sm:px-6 lg:px-8">
+                                    {{ $header }}
+                                </div>
+                            </header>
+                        @endisset
+
+                        <!-- Page Content -->
+                        <main>
+                            @if (session('success'))
+                                <div class="mb-4 rounded-md border border-green-200 bg-green-50 px-4 py-3 text-sm text-green-700">
+                                    {{ session('success') }}
+                                </div>
+                            @endif
+
+                            {{ $slot ?? '' }}
+                            @yield('content')
+                        </main>
+                    </div>
+                </div>
+            </div>
         </div>
     </body>
 </html>

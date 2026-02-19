@@ -11,9 +11,24 @@
             @error('name')<div class="text-red-600 text-xs mt-1">{{ $message }}</div>@enderror
         </div>
         <div class="mb-4">
+            <label class="block text-sm font-medium text-gray-700 mb-1">Username</label>
+            <input type="text" name="username" value="{{ old('username') }}" class="w-full border border-gray-300 rounded px-3 py-2 focus:ring-primary focus:border-primary" required>
+            @error('username')<div class="text-red-600 text-xs mt-1">{{ $message }}</div>@enderror
+        </div>
+        <div class="mb-4">
             <label class="block text-sm font-medium text-gray-700 mb-1">Email</label>
             <input type="email" name="email" value="{{ old('email') }}" class="w-full border border-gray-300 rounded px-3 py-2 focus:ring-primary focus:border-primary" required>
             @error('email')<div class="text-red-600 text-xs mt-1">{{ $message }}</div>@enderror
+        </div>
+        <div class="mb-4">
+            <label class="block text-sm font-medium text-gray-700 mb-1">Division</label>
+            <select name="division_id" class="w-full border border-gray-300 rounded px-3 py-2 focus:ring-primary focus:border-primary" required>
+                <option value="">Select division</option>
+                @foreach($divisions as $division)
+                    <option value="{{ $division->division_id }}" @selected(old('division_id') == $division->division_id)>{{ $division->Nama_Divisi }}</option>
+                @endforeach
+            </select>
+            @error('division_id')<div class="text-red-600 text-xs mt-1">{{ $message }}</div>@enderror
         </div>
         <div class="mb-4">
             <label class="block text-sm font-medium text-gray-700 mb-1">Role</label>

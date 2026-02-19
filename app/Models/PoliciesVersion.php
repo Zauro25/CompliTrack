@@ -28,6 +28,6 @@ class PoliciesVersion extends Model
 
     public function checklists()
     {
-        return $this->hasMany(Checklists::class, 'Version_id');
+        return $this->hasMany(Checklists::class, 'version_id');
     }
 }

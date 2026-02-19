@@ -8,12 +8,12 @@
         @method('PUT')
         <div class="mb-4">
             <label class="block text-sm font-medium text-gray-700 mb-1">Name</label>
-            <input type="text" name="name" value="{{ old('name', $division->name) }}" class="w-full border border-gray-300 rounded px-3 py-2 focus:ring-primary focus:border-primary" required>
+            <input type="text" name="name" value="{{ old('name', $division->Nama_Divisi) }}" class="w-full border border-gray-300 rounded px-3 py-2 focus:ring-primary focus:border-primary" required>
             @error('name')<div class="text-red-600 text-xs mt-1">{{ $message }}</div>@enderror
         </div>
         <div class="mb-4">
             <label class="block text-sm font-medium text-gray-700 mb-1">Description</label>
-            <textarea name="description" class="w-full border border-gray-300 rounded px-3 py-2 focus:ring-primary focus:border-primary" required>{{ old('description', $division->description) }}</textarea>
+            <textarea name="description" class="w-full border border-gray-300 rounded px-3 py-2 focus:ring-primary focus:border-primary" required>{{ old('description', $division->Deskripsi) }}</textarea>
             @error('description')<div class="text-red-600 text-xs mt-1">{{ $message }}</div>@enderror
         </div>
         <div class="flex justify-end">
